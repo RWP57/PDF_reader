@@ -94,7 +94,7 @@ def sort_documents():
 if __name__ == "__main__":
     jfk_pdf_urls = list_pdf()
     print(f'download start: {datetime.now()}')
-    #download_jfk_pdfs(jfk_pdf_urls)
+    download_jfk_pdfs(jfk_pdf_urls)
     print(f'download end: {datetime.now()}')
     print(f"Documents listed: {len(jfk_pdf_urls)}")
     print(f'Sort start: {datetime.now()}')
