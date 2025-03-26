@@ -5,6 +5,11 @@ import requests
 from datetime import datetime
 from collections import defaultdict
 
+import pdf2image
+import pytesseract
+#from PIL import Image
+#from poppler import load_from_file, PageRenderer
+
 # Define the directory where documents are stored
 DOCS_URL_2025 = "https://www.archives.gov/files/research/jfk/releases/2025/0318/"
 DOCS_URL_2023 = "https://www.archives.gov/files/research/jfk/releases/2023/"
@@ -54,7 +59,16 @@ def extract_text_from_pdf(pdf_path):
         print(f"Error reading {pdf_path}: {e}")
         return ""
 
+def extract_text_from_scanned_pdf(pdf_nm):
+    print(f" A: {pdf_nm}")
+    images = pdf2image.convert_from_path(pdf_nm)
+    print(f" B: {pdf_nm}")
+    text = ""
+    for i, image in enumerate(images):
+        text += pytesseract.image_to_string(image, lang='eng')
+    return text
 
+    return
 # Function to categorize documents based on keywords
 def categorize_document(text, filename):
     categories = set()
@@ -78,6 +92,14 @@ def sort_documents():
             file_path = os.path.join(DOCS_DIR, file)
             text = extract_text_from_pdf(file_path)
             #print(f"TEXT: XX{len(text)}XX")
+            if len(text) == 0:
+                print(f"FP1: {file_path}")
+                images = pdf2image.convert_from_path(file_path)
+                print(f"FP2: {file_path}")
+                for i, image in enumerate(images):
+                    text += pytesseract.image_to_string(image, lang='eng')
+                #text = extract_text_from_scanned_pdf(file_path)
+
 
             categories = categorize_document(text, file)
 
@@ -94,7 +116,7 @@ def sort_documents():
 if __name__ == "__main__":
     jfk_pdf_urls = list_pdf()
     print(f'download start: {datetime.now()}')
-    download_jfk_pdfs(jfk_pdf_urls)
+    #download_jfk_pdfs(jfk_pdf_urls)
     print(f'download end: {datetime.now()}')
     print(f"Documents listed: {len(jfk_pdf_urls)}")
     print(f'Sort start: {datetime.now()}')
