@@ -53,7 +53,8 @@ def scrape_images(url, folder_path):
 # Main function
 if __name__ == "__main__":
     # URL of the website you want to scrape
-    website_url = 'https://example.com'  # Replace with your desired URL
+   # website_url = 'https://example.com'  # Replace with your desired URL
+    website_url = 'https://weather.com'
     download_folder = 'downloaded_images'  # Folder to save the images
 
     # Call the scraping function
